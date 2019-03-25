@@ -11,7 +11,10 @@ const blogStyle = {
 const Blog = ({ blog, removeBlog, likeBlog }) => {
   const [showAll, setShowAll] = useState(false)
   const getUsername =
-    () => JSON.parse(window.localStorage.getItem('BlogUser')).username
+    () => {
+      const user = JSON.parse(window.localStorage.getItem('BlogUser'))
+      return user ? user.username : null
+    }
 
 
 
