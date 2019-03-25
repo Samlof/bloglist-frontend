@@ -9,8 +9,9 @@ const blogStyle = {
   marginBottom: 5
 }
 
-const Blog = ({ blog, setErrorMessage, updateLikes }) => {
+const Blog = ({ blog, setErrorMessage, updateLikes, removeBlog }) => {
   const [showAll, setShowAll] = useState(false)
+  const user = JSON.parse(window.localStorage.getItem('BlogUser'))
 
   const likedBlog = async () => {
     console.log("liked :", blog.title)
@@ -28,11 +29,25 @@ const Blog = ({ blog, setErrorMessage, updateLikes }) => {
     console.log(newBlog)
     updateLikes(newBlog)
   }
+  const deleteBlog = async () => {
+    if (window.confirm("remove blog. You're not gonna need it! by " + blog.author)) {
+      try {
+        await blogService.remove(blog)
+      } catch (e) {
+
+        setErrorMessage(e.response.data.error)
+        return
+      }
+      removeBlog(blog)
+    }
+  }
+
   const fullInfo = () => (
     <div>
       <div><a href={blog.url}>{blog.url}</a></div>
       <div>{blog.likes} likes <button onClick={likedBlog}>likes</button></div>
       <div>added by {blog.user.name}</div>
+      {user.username === blog.user.username && <button onClick={deleteBlog}>remove</button>}
     </div>
   )
   return (

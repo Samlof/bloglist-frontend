@@ -57,6 +57,10 @@ const App = () => {
     setBlogs(blogs.concat(blog))
     setNotification('Uusi blogi lisättiin')
   }
+  const removeBlog = blog => {
+    setBlogs(blogs.filter(b => b.id !== blog.id))
+    setNotification('Blogi poistettu')
+  }
   const updateLikes = blog => {
     const newBlogs = blogs.map(b => {
       if (b.id === blog.id) {
@@ -103,6 +107,8 @@ const App = () => {
       </div>
     )
   }
+
+  const blogsToShow = blogs.sort((a, b) => b.likes - a.likes)
   return (
     <div>
       <h2>blogs</h2>
@@ -118,8 +124,8 @@ const App = () => {
           <CreateBlogForm addBlog={addBlog} setErrorMessage={setError} />
         </Togglable>
       </div>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} setErrorMessage={setError} updateLikes={updateLikes} />
+      {blogsToShow.map(blog =>
+        <Blog key={blog.id} blog={blog} removeBlog={removeBlog} setErrorMessage={setError} updateLikes={updateLikes} />
       )}
     </div>
   )

@@ -24,4 +24,14 @@ const update = blog => {
   return request.then(res => res.data)
 }
 
-export default { getAll, create, setToken, update }
+const remove = blog => {
+  const config = {
+    headers: {
+      Authorization: token
+    }
+  }
+  const request = axios.delete(baseUrl + '/' + blog.id, config)
+  return request.then(res => res.data)
+}
+
+export default { getAll, create, setToken, update, remove }
