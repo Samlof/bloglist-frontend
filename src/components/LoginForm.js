@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import loginService from '../services/login'
 
 const LoginForm = (props) => {
-  const { setUser } = props
+  const { login } = props
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -12,8 +12,7 @@ const LoginForm = (props) => {
     setUsername('')
     setPassword('')
 
-    setUser(user)
-    window.localStorage.setItem('BlogUser', JSON.stringify(user))
+    login(user)
   }
   return (
     <form>
