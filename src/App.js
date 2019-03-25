@@ -105,11 +105,10 @@ const App = () => {
     blogService.setToken(null)
     setNotification('Kirjauduttiin ulos')
   }
-
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
+    blogService.getAll().then(bs => {
+      setBlogs(bs)
+    })
   }, [])
 
   // Try to load old user

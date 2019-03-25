@@ -27,7 +27,7 @@ const Blog = ({ blog, removeBlog, likeBlog }) => {
     </div>
   )
   return (
-    <div style={blogStyle}>
+    <div className='blog-wrapper' style={blogStyle}>
       <div onClick={() => setShowAll(!showAll)}>
         {blog.title} {blog.author}
       </div>
