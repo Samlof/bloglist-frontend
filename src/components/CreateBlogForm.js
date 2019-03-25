@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
 const LoginForm = (props) => {
-  const { addBlog } = props
+  const { addBlog, setErrorMessage } = props
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -12,7 +12,13 @@ const LoginForm = (props) => {
     const blogObj = {
       title, author, url
     }
-    const newBlog = await blogService.create(blogObj)
+    let newBlog
+    try {
+      newBlog = await blogService.create(blogObj)
+    } catch (e) {
+      setErrorMessage(e.response.data.error)
+      return
+    }
     setTitle('')
     setAuthor('')
     setUrl('')

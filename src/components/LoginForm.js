@@ -2,16 +2,23 @@ import React, { useState } from 'react'
 import loginService from '../services/login'
 
 const LoginForm = (props) => {
-  const { login } = props
+  const { login, setErrorMessage, setNotificatioMessage } = props
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
   const submitForm = async e => {
     e.preventDefault()
-    const user = await loginService.login({ username, password })
+    let user
+    try {
+      user = await loginService.login({ username, password })
+    } catch (e) {
+      setErrorMessage(e.response.data.error)
+      return
+    }
     setUsername('')
     setPassword('')
 
+    setNotificatioMessage('Kirjauduttiin sisään')
     login(user)
   }
   return (
