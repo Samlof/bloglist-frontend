@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
+
 import loginService from '../services/login'
 
 const LoginForm = (props) => {
@@ -25,7 +27,7 @@ const LoginForm = (props) => {
     <form>
       <div>
         käyttäjätunnus:
-      <input value={username} onChange={(e) => setUsername(e.target.value)} />
+        <input value={username} onChange={(e) => setUsername(e.target.value)} />
       </div>
       <div>
         salasana:
@@ -36,6 +38,12 @@ const LoginForm = (props) => {
       </div>
     </form>
   )
+}
+
+LoginForm.propTypes = {
+  login: PropTypes.func.isRequired,
+  setErrorMessage: PropTypes.func.isRequired,
+  setNotificatioMessage: PropTypes.func.isRequired,
 }
 
 export default LoginForm

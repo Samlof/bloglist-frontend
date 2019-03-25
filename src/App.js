@@ -58,8 +58,9 @@ const App = () => {
     setBlogs(blogs.concat(blog))
     setNotification('Uusi blogi lisättiin')
   }
+
   const removeBlog = async blog => {
-    if (window.confirm("remove blog. You're not gonna need it! by " + blog.author)) {
+    if (window.confirm('remove blog. You\'re not gonna need it! by ' + blog.author)) {
       try {
         await blogService.remove(blog)
       } catch (e) {
@@ -71,10 +72,23 @@ const App = () => {
       setNotification('Blogi poistettu')
     }
   }
-  const updateLikes = blog => {
+
+  const likeBlog = async blog => {
+    const updateObject = {
+      id: blog.id,
+      likes: blog.likes + 1
+    }
+    let newBlog
+    try {
+      newBlog = await blogService.update(updateObject)
+    } catch (e) {
+      setErrorMessage(e.response.data.error)
+      return
+    }
+
     const newBlogs = blogs.map(b => {
-      if (b.id === blog.id) {
-        b.likes = blog.likes;
+      if (b.id === newBlog.id) {
+        b.likes = newBlog.likes
       }
       return b
     })
@@ -135,7 +149,7 @@ const App = () => {
         </Togglable>
       </div>
       {blogsToShow.map(blog =>
-        <Blog key={blog.id} blog={blog} removeBlog={removeBlog} setErrorMessage={setError} updateLikes={updateLikes} />
+        <Blog key={blog.id} blog={blog} likeBlog={likeBlog} removeBlog={removeBlog} />
       )}
     </div>
   )
