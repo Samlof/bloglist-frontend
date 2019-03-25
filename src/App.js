@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import CreateBlogForm from './components/CreateBlogForm'
+import Togglable from './components/Togglable'
 
 import blogService from './services/blogs'
 
@@ -37,6 +38,8 @@ const App = () => {
   const [notificationMessage, setNotificationMessage] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
 
+  const createBlogFormRef = React.createRef()
+
   const setError = message => {
     setErrorMessage(message)
     setTimeout(() => {
@@ -50,6 +53,7 @@ const App = () => {
     }, 5000)
   }
   const addBlog = blog => {
+    createBlogFormRef.current.toggleVisibility()
     setBlogs(blogs.concat(blog))
     setNotification('Uusi blogi lisättiin')
   }
@@ -84,7 +88,9 @@ const App = () => {
         <h2>Log in to application</h2>
         <Error message={errorMessage} />
         <Notification message={notificationMessage} />
-        <LoginForm login={login} setErrorMessage={setError} setNotificatioMessage={setNotification} />
+        <Togglable buttonLabel='login'>
+          <LoginForm login={login} setErrorMessage={setError} setNotificatioMessage={setNotification} />
+        </Togglable>
       </div>
     )
   }
@@ -99,7 +105,9 @@ const App = () => {
       </div>
       <div>
         <h2>create new</h2>
-        <CreateBlogForm addBlog={addBlog} setErrorMessage={setError} />
+        <Togglable buttonLabel='Create new' ref={createBlogFormRef}>
+          <CreateBlogForm addBlog={addBlog} setErrorMessage={setError} />
+        </Togglable>
       </div>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />

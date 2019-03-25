@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
-const LoginForm = (props) => {
+const CreateBlogForm = (props) => {
   const { addBlog, setErrorMessage } = props
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
@@ -46,4 +46,4 @@ const LoginForm = (props) => {
   )
 }
 
-export default LoginForm
+export default CreateBlogForm
