@@ -1,16 +1,20 @@
-import React, { useState } from 'react'
+import React from 'react'
+
 import blogService from '../services/blogs'
+import { useField } from '../hooks'
 
 const CreateBlogForm = (props) => {
   const { addBlog, setErrorMessage } = props
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  const [resetTitle, title] = useField('text')
+  const [resetAuthor, author] = useField('text')
+  const [resetUrl, url] = useField('text')
 
   const submitForm = async e => {
     e.preventDefault()
     const blogObj = {
-      title, author, url
+      title: title.value,
+      author: author.value,
+      url: url.value
     }
     let newBlog
     try {
@@ -19,9 +23,9 @@ const CreateBlogForm = (props) => {
       setErrorMessage(e.response.data.error)
       return
     }
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    resetTitle()
+    resetAuthor()
+    resetUrl()
 
     addBlog(newBlog)
   }
@@ -29,15 +33,15 @@ const CreateBlogForm = (props) => {
     <form>
       <div>
         title:
-      <input value={title} onChange={(e) => setTitle(e.target.value)} />
+        <input {...title} />
       </div>
       <div>
         author:
-        <input value={author} onChange={(e) => setAuthor(e.target.value)} />
+        <input {...author} />
       </div>
       <div>
         url:
-        <input value={url} onChange={(e) => setUrl(e.target.value)} />
+        <input {...url} />
       </div>
       <div>
         <button onClick={submitForm}>create</button>

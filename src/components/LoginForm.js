@@ -1,24 +1,28 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
 import loginService from '../services/login'
+import { useField } from '../hooks'
 
 const LoginForm = (props) => {
   const { login, setErrorMessage, setNotificatioMessage } = props
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [resetUsername, username] = useField('text')
+  const [resetPassword, password] = useField('password')
 
   const submitForm = async e => {
     e.preventDefault()
     let user
     try {
-      user = await loginService.login({ username, password })
+      user = await loginService.login({
+        username: username.value,
+        password: password.value
+      })
     } catch (e) {
       setErrorMessage(e.response.data.error)
       return
     }
-    setUsername('')
-    setPassword('')
+    resetUsername()
+    resetPassword()
 
     setNotificatioMessage('Kirjauduttiin sisään')
     login(user)
@@ -27,11 +31,11 @@ const LoginForm = (props) => {
     <form>
       <div>
         käyttäjätunnus:
-        <input value={username} onChange={(e) => setUsername(e.target.value)} />
+        <input {...username} />
       </div>
       <div>
         salasana:
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <input {...password} />
       </div>
       <div>
         <button onClick={submitForm}>Kirjaudu</button>
