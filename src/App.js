@@ -57,6 +57,15 @@ const App = () => {
     setBlogs(blogs.concat(blog))
     setNotification('Uusi blogi lisättiin')
   }
+  const updateLikes = blog => {
+    const newBlogs = blogs.map(b => {
+      if (b.id === blog.id) {
+        b.likes = blog.likes;
+      }
+      return b
+    })
+    setBlogs(newBlogs)
+  }
   const login = user => {
     window.localStorage.setItem('BlogUser', JSON.stringify(user))
     setUser(user)
@@ -110,7 +119,7 @@ const App = () => {
         </Togglable>
       </div>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} setErrorMessage={setError} updateLikes={updateLikes} />
       )}
     </div>
   )

@@ -19,4 +19,9 @@ const create = blog => {
   return request.then(res => res.data)
 }
 
-export default { getAll, create, setToken }
+const update = blog => {
+  const request = axios.put(baseUrl + '/' + blog.id, blog)
+  return request.then(res => res.data)
+}
+
+export default { getAll, create, setToken, update }

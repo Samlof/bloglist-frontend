@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import blogService from '../services/blogs'
 
 const blogStyle = {
   paddingTop: 10,
@@ -8,11 +9,24 @@ const blogStyle = {
   marginBottom: 5
 }
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, setErrorMessage, updateLikes }) => {
   const [showAll, setShowAll] = useState(false)
 
-  const likedBlog = () => {
+  const likedBlog = async () => {
     console.log("liked :", blog.title)
+    const updateObject = {
+      id: blog.id,
+      likes: blog.likes + 1
+    }
+    let newBlog
+    try {
+      newBlog = await blogService.update(updateObject)
+    } catch (e) {
+      setErrorMessage(e.response.data.error)
+      return
+    }
+    console.log(newBlog)
+    updateLikes(newBlog)
   }
   const fullInfo = () => (
     <div>
