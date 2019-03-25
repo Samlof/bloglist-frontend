@@ -54,12 +54,22 @@ const App = () => {
   }
   const addBlog = blog => {
     createBlogFormRef.current.toggleVisibility()
+    blog.user = user
     setBlogs(blogs.concat(blog))
     setNotification('Uusi blogi lisättiin')
   }
-  const removeBlog = blog => {
-    setBlogs(blogs.filter(b => b.id !== blog.id))
-    setNotification('Blogi poistettu')
+  const removeBlog = async blog => {
+    if (window.confirm("remove blog. You're not gonna need it! by " + blog.author)) {
+      try {
+        await blogService.remove(blog)
+      } catch (e) {
+
+        setErrorMessage(e.response.data.error)
+        return
+      }
+      setBlogs(blogs.filter(b => b.id !== blog.id))
+      setNotification('Blogi poistettu')
+    }
   }
   const updateLikes = blog => {
     const newBlogs = blogs.map(b => {
